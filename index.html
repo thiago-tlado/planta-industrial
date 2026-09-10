@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produção</title>
+    <link rel="stylesheet" href="style.css?v=1.38">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="scripts/script-main.js?v=1.41"></script>
+    <script src="scripts/script-index.js?v=1.41" defer></script>
+</head>
+<body>
+    <div class="navbar">
+        <div class="menu">
+            <a href="index.html">Produção</a>
+            <a href="dash.html">Dashboard</a>
+            <a href="rede.html">Treinamento</a>
+        </div>
+    </div>
+    <!---------->
+    <div class="painel">
+        <div class="container">
+            <div class="grid">
+                <div class="chart-card">
+                    <h4 style="text-align: center;">Itens Produzidos</h4>
+                    <canvas id="chart1"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h4 style="text-align: center;">Enviados Para Elevador</h4>
+                    <canvas id="chart2"></canvas>
+                </div>
+            </div>
+            <br>
+            <div class="grid">
+                <div class="chart-card">
+                    <h4 style="text-align: center;">Enviados Para A</h4>
+                    <canvas id="chart3"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h4 style="text-align: center;">Enviados Para B</h4>
+                    <canvas id="chart4"></canvas>
+                </div>
+            </div>
+            <br>
+            <div class="grid">
+                <div class="chart-card">
+                    <h4 style="text-align: center;">Tempo de Atendimento - Itens</h4>
+                    <canvas id="chart5"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h4 style="text-align: center;">Tempo de Atendimento - Destinos</h4>
+                    <canvas id="chart6"></canvas>
+                </div>
+            </div>
+            <div class="input-card">
+                <button type="button" onclick="relatorio('api')" class="train-btn" style="background-color: green;">Gerar Relatório de IA</button>
+                <br>
+                <div id="relatorio" class="input-label">
+                </div>      
+            </div>
+        </div>   
+    </div>
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        limparGraficos();
+        relatorio();
+    });
+</script>
+</html> 

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="style.css?v=1.38">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="scripts/script-main.js?v=1.40"></script>
+    <script src="scripts/script-dash.js?v=1.40" defer></script>
+</head>
+<body>
+    <div class="navbar">
+        <div class="menu">
+            <a href="index.html">Produção</a>
+            <a href="dash.html">Dashboard</a>
+            <a href="rede.html">Treinamento</a>
+        </div>
+    </div>
+    <!---------->
+    <div class="painel">
+        <img src="_planta.jpg" class="fundo" alt="Planta industrial">
+        <svg class="overlay" viewBox="0 0 1080 882">
+            <!-- Prioridade -->
+            <circle id='pivotA' cx="285" cy="750" r="10" fill="red" />
+            <text x="220" y="755" fill="white" font-size="14">Pivot A</text>
+            <circle id='pivotB' cx="475" cy="700" r="10" fill="red" />
+            <text x="410" y="705" fill="white" font-size="14">Pivot B</text>
+            <!-- Esteira principal -->
+            <circle id='repositor' cx="115" cy="780" r="10" fill="red" />
+            <text x="40" y="785" fill="white" font-size="14">Repositor</text>
+            <text x="100" y="670" fill="white" font-size="14">Item</text>
+            <rect x="100" y="675" width="60" height="20" fill="yellow" />
+            <text id='item' x="110" y="690" fill="black" font-size="14">0</text> 
+            <text x="320" y="710" fill="white" font-size="14">Principal</text>
+            <rect x="320" y="715" width="60" height="20" fill="yellow" />
+            <text x="330" y="730" fill="black" font-size="14" id="esteira-main">0</text> 
+            <!-- Manipulador A -->
+            <circle id='sensor-fimA' cx="245" cy="460" r="10" fill="red" />
+            <text x="155" y="465" fill="white" font-size="14">Sensor Fim</text> 
+            <circle cx="175" cy="280" r="10" id="agarrar-A" fill="red" />
+            <text x="110" y="285" fill="white" font-size="14">Agarrar</text>
+            <text x="110" y="305" fill="white" font-size="14">Eixo X</text>
+            <rect x="110" y="310" width="60" height="20" fill="yellow" />
+            <text x="120" y="325" fill="black" font-size="14" id="eixoX-A">0</text>  
+            <text x="110" y="350" fill="white" font-size="14">Eixo Z</text>
+            <rect x="110" y="355" width="60" height="20" fill="yellow" />
+            <text x="120" y="370" fill="black" font-size="14" id="eixoZ-A">0</text> 
+            <circle cx="220" cy="410" r="10" id="saida-A" fill="red" />
+            <text x="120" y="415" fill="white" font-size="14">Esteira Saída</text>
+            <text x="210" y="550" fill="white" font-size="14">Esteira</text>
+            <rect x="210" y="555" width="60" height="20" fill="yellow" />
+            <text x="220" y="570" fill="black" font-size="14" id="esteira-A">0</text>
+            <text x="210" y="600" fill="white" font-size="14">Item</text>
+            <rect x="210" y="605" width="60" height="20" fill="yellow" />
+            <text x="220" y="620" fill="black" font-size="14" id="item-A">0</text>
+            <!-- Manipulador B -->
+            <circle id='sensor-fimB' cx="385" cy="430" r="10" fill="red" />
+            <text x="295" y="435" fill="white" font-size="14">Sensor Fim</text> 
+            <circle cx="425" cy="250" r="10" id="agarrar-B" fill="red" />
+            <text x="360" y="255" fill="white" font-size="14">Agarrar</text>
+            <text x="360" y="275" fill="white" font-size="14">Eixo X</text>
+            <rect x="360" y="280" width="60" height="20" fill="yellow" />
+            <text x="370" y="295" fill="black" font-size="14" id="eixoX-B">0</text>  
+            <text x="360" y="320" fill="white" font-size="14">Eixo Z</text>
+            <rect x="360" y="325" width="60" height="20" fill="yellow" />
+            <text x="370" y="340" fill="black" font-size="14" id="eixoZ-B">0</text> 
+            <circle cx="410" cy="380" r="10" id="saida-B" fill="red" />
+            <text x="310" y="385" fill="white" font-size="14">Esteira Saída</text>
+            <text x="370" y="520" fill="white" font-size="14">Esteira</text>
+            <rect x="370" y="525" width="60" height="20" fill="yellow" />
+            <text x="380" y="540" fill="black" font-size="14" id="esteira-B">0</text>
+            <text x="370" y="570" fill="white" font-size="14">Item</text>
+            <rect x="370" y="575" width="60" height="20" fill="yellow" />
+            <text x="380" y="590" fill="black" font-size="14" id="item-B">0</text>
+            <!-- Elevador -->
+            <circle id='elevador0' cx="785" cy="610" r="10" fill="red" />
+            <text x="715" y="615" fill="white" font-size="14">Esteira 0</text> 
+            <circle id='elevador1' cx="805" cy="390" r="10" fill="red" />
+            <text x="735" y="395" fill="white" font-size="14">Esteira 1</text> 
+            <circle id='elevador2' cx="855" cy="120" r="10" fill="red" />
+            <text x="785" y="125" fill="white" font-size="14">Esteira 2</text>
+            <text x="550" y="435" fill="white" font-size="14">Elevador</text>
+            <rect x="550" y="440" width="60" height="20" fill="yellow" />
+            <text id="elevador-nivel" x="560" y="455" fill="black" font-size="14">0</text> 
+            <text x="565" y="610" fill="white" font-size="14">Item</text>
+            <rect x="600" y="605" width="60" height="20" fill="yellow" />
+            <text id="item-elevador" x="610" y="620" fill="black" font-size="14">0</text>
+            <circle id='elevador-esteira' cx="625" cy="700" r="10" fill="red" />
+            <text x="565" y="705" fill="white" font-size="14">Esteira</text> 
+        </svg>
+    </div>
+    <!---------->
+    <div class="container">
+        <div class="table-card">
+            <div class="input-form">
+                <div class="input-group">
+                    <label class="input-label">Hora</label>
+                    <input id="hora" type="text" class="input-text" readonly>
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Ação</label>
+                    <button onclick="atualizarGraficos('acao')" type="button" id="acao-btn" class="insert-btn" style="background-color: green;">Ligar</button>
+                </div>       
+            </div>
+        </div>
+
+        <div class="table-card">
+            <div class="input-form">
+                <div class="input-group">
+                    <label class="input-label" style="color:blue"><b>Item X (Azul)</b></label>
+                    <input type="number" id="X" value="1" step="1" class="input-text" placeholder="Quantidade">
+                </div>
+                <div class="input-group">
+                    <label class="input-label" style="color:green"><b>Item Y (Verde)</b></label>
+                    <input type="number" id="Y" value="1" step="1" class="input-text" placeholder="Quantidade">
+                </div>
+                <div class="input-group">
+                    <label class="input-label" style="color:gray"><b>Item Z (Cinza)</b></label>
+                    <input type="number" id="Z" value="1" step="1" class="input-text" placeholder="Quantidade">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Pedido</label>
+                    <button onclick="gerenciarItens('inserir')" type="button" class="insert-btn">Inserir</button>
+                </div>       
+            </div>
+        </div>
+        <!--  -->
+        <div class="table-card">
+            <table id="dados-tabela" class="dados-tabela">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Item X</th>
+                        <th>Item Y</th>
+                        <th>Item Z</th>
+                        <th>Status</th>
+                        <th>Hora</th>
+                        <th>Ação</th>
+                    </tr>
+                </thead>
+                <tbody id="dados-tabela-body">
+                    <tr>
+                        <td colspan="7" style="text-align:center;">Aguardando dados</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="container">
+            <div class="grid">
+                <div class="chart-card">
+                    <h4 style="text-align: center;">Rede Despacho</h4>
+                    <canvas id="chart0"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h4 style="text-align: center;">Rede Prioridade</h4>
+                    <canvas id="chart1"></canvas>
+                </div>
+            </div>
+            <br>
+            <div class="grid">
+                <div class="chart-card">
+                    <h4 style="text-align: center;">Rede Esteira</h4>
+                    <canvas id="chart2"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h4 style="text-align: center;">Rede Elevador</h4>
+                    <canvas id="chart3"></canvas>
+                </div>
+            </div>
+            <br>
+            <div class="grid">
+                <div class="chart-card">
+                    <h4 style="text-align: center;">Rede Expedição A</h4>
+                    <canvas id="chart4"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h4 style="text-align: center;">Rede Expedição B</h4>
+                    <canvas id="chart5"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="input-card">
+            <div class="input-form">
+                <div class="input-group">
+                    <label class="input-label">Rede</label>
+                    <select onchange="atualizarGraficos('listar')" id="dados-rede" class="input-text">
+                        <option value="prioridade">Prioridade</option>
+                        <option value="esteira">Esteira</option>
+                        <option value="expedicaoA">Expedição A</option>
+                        <option value="expedicaoB">Expedição B</option>
+                        <option value="despacho">Despacho</option>
+                        <option value="elevador">Elevador</option>
+                    </select>
+                </div>    
+                <div class="input-group">
+                    <label class="input-label">Quantidade</label>
+                    <input type="number" id="qtd" value="10" step="1" min="0" class="input-text" placeholder="Quantidade">
+                </div>
+            </div>
+        </div>        
+
+        <div class="table-card">
+            <table id="sinais-tabela" class="dados-tabela">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Hora</th>
+                        <th>Entradas</th>
+                        <th>Saídas</th>
+                    </tr>
+                </thead>
+                <tbody id="sinais-tabela-body">
+                    <tr>
+                        <td colspan="4" style="text-align:center;">Aguardando dados</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        gerenciarItens('listar');        
+        limparGraficos();
+        atualizarGraficos();
+        setInterval(() => { atualizarGraficos(); }, 500);
+        setInterval(() => { gerenciarItens('listar'); }, 5000);
+    });
+</script>
+</html> 
