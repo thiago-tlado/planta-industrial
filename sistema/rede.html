@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Treinamento</title>
+    <link rel="stylesheet" href="style.css?v=1.38">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="scripts/script-main.js?v=1.40"></script>
+    <script src="scripts/script-rede.js?v=1.39" defer></script>
+</head>
+<body>
+    <div class="navbar">
+        <div class="menu">
+            <a href="index.html">Produção</a>
+            <a href="dash.html">Dashboard</a>
+            <a href="rede.html">Treinamento</a>
+        </div>
+    </div>
+        <!-- Overlay de carregamento -->
+        <div id="loading-overlay" style="display:none;">
+            <div class="loading-spinner">Treinando Rede, aguarde...</div>
+        </div>
+    <div class="container">
+        <div class="input-card" id="select-card">
+            <div class="input-form">
+                <div class="input-group">
+                    <label class="input-label">Rede</label>
+                    <select onchange="dadosTreinamento('treinos'); treinarRede('iniciar')" id="rede-select" class="input-text">
+                        <option value="teste">Teste</option>
+                        <option value="despacho">Despacho</option>
+                        <option value="prioridade">Prioridade</option>
+                        <option value="esteira">Esteira</option>
+                        <option value="expedicao">Expedição</option>
+                        <option value="elevador">Elevador</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Treinamento</label>
+                    <select onchange="dadosTreinamento('listar'); treinarRede('iniciar')" id="versao-select" class="input-text">
+                        <option value="novo">Novo</option>
+                    </select>
+                </div>
+                <div class="input-group" id="remover-group" style="display:none;">
+                    <label class="input-label">Ação</label>
+                    <div style="display:flex; gap:0.5rem;">
+                        <button type="button" onclick="dadosTreinamento('clonar')" class="train-btn">Clonar</button>
+                        <button type="button" onclick="dadosTreinamento('remover')" class="train-btn" style="background-color: red;">Deletar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--  -->
+        <div class="input-card">
+            <div class="input-form">
+                <div class="input-group">
+                    <label for="entrada" class="input-label">Entradas</label>
+                    <input type="text" id="entrada" class="input-text" placeholder="Entrada">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Saídas</label>
+                    <input type="text" id="saida" class="input-text" placeholder="Saída">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Ação</label>
+                    <button onclick="dadosTreinamento('inserir')" type="button" class="insert-btn">Inserir</button>
+                </div>       
+            </div>
+        </div>
+        <!--  -->
+        <div class="table-card">
+            <table id="dados-tabela" class="dados-tabela">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Entradas</th>
+                        <th>Saídas</th>
+                        <th>Ação</th>
+                    </tr>
+                </thead>
+                <tbody id="dados-tabela-body">
+                    <tr>
+                        <td colspan="4" style="text-align:center;">Aguardando dados</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    <!--  -->
+        <div class="input-card">
+            <div class="input-form">
+                <div class="input-group">
+                    <label class="input-label">Épocas</label>
+                    <input type="number" id="epocas" class="input-text" value="10">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Taxa</label>
+                    <input type="number" id="taxa" class="input-text" value="0.1" step="0.01">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Treinamento</label>
+                    <div style="display:flex; gap:0.5rem;">
+                        <button type="button" class="train-btn" onclick="treinarRede('treinar')">Iniciar</button>
+                        <button type="button" class="train-btn" onclick="treinarRede('resetar')" style="background-color: red;">Reset</button>
+                    </div>
+                </div>    
+            </div>
+        </div>
+        <div class="input-card">
+            <div class="input-form">
+                <div class="input-group">
+                    <label for="entrada" class="input-label">Valores de teste</label>
+                    <input type="text" id="teste-select" class="input-text" placeholder="Entrada">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Teste</label>
+                    <button type="button" onclick="treinarRede('teste')" class="train-btn">Testar</button>
+                </div>  
+                <div class="input-group">
+                    <label class="input-label">Ação</label>
+                    <button type="button" onclick="treinarRede('usar')" class="train-btn" style="background-color: black;">Usar</button>
+                </div>  
+                <div class="input-group">
+                    <label class="input-label">Versão final</label>
+                    <input type="text" id="versao-final" class="input-text" value="Não configurado" readonly>
+                </div>  
+            </div>
+        </div>  
+        <div class="container">
+            <div class="grid">
+                <div class="chart-card">
+                    <h4 style="text-align: center;">Acurácia</h4>
+                    <canvas id="chart01"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h4 style="text-align: center;">Acurácia Geral</h4>
+                    <canvas id="chart02"></canvas>
+                </div>
+            </div>
+            <br>
+            <div class="grid">
+                <div class="chart-card">
+                    <h4 style="text-align: center;">Erro</h4>
+                    <canvas id="chart1"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h4 style="text-align: center;">Erro geral</h4>
+                    <canvas id="chart2"></canvas>
+                </div>
+            </div>
+            <div class="input-card">
+                <div class="input-form">
+                    <div class="input-group">
+                        <label class="input-label">Entrada-Oculta</label>
+                        <select onchange="atualizarGraficos()" id="EO" class="input-text"></select>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Oculta-Saída</label>
+                        <select onchange="atualizarGraficos()" id="OS" class="input-text"></select>
+                    </div>      
+                </div>
+            </div>
+            <br><br>
+            <div class="grid">
+                <div class="chart-card">
+                    <h4 style="text-align: center;">Entrada-Oculta</h4>
+                    <canvas id="chart3"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h4 style="text-align: center;">Oculta-Saída</h4>
+                    <canvas id="chart4"></canvas>
+                </div>
+            </div>
+            <br>
+            <div class="grid">
+                <div class="chart-card">
+                    <h4 style="text-align: center;">Bias Oculta</h4>
+                    <canvas id="chart5"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h4 style="text-align: center;">Bias Saída</h4>
+                    <canvas id="chart6"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="input-card">
+            <div id="info" class="input-label">...</div>
+        </div>
+    </div>
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        dadosTreinamento('treinos');
+    });
+</script>
+</html> 
