@@ -1,4 +1,6 @@
 async function gerenciarItens(comando, id = 0) {
+    if(comando === 'deletar' && !confirm('Tem certeza que deseja deletar este pedido?')) return;
+
     let pedido = [];
     if(comando === 'inserir') {
         const x = parseInt(document.getElementById('X').value);

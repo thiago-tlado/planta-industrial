@@ -13,6 +13,9 @@ function checarDados(entrada, saida) {
 }
 
 async function dadosTreinamento(comando, pos = 0) {
+    if(comando === 'remover' && !confirm('Tem certeza que deseja deletar esta rede?')) return;
+    if(comando === 'deletar' && !confirm('Tem certeza que deseja deletar este conjunto de dados de treinamento?')) return;
+
     const entrada = document.getElementById('entrada').value;
     const saida = document.getElementById('saida').value;
 
@@ -238,6 +241,8 @@ async function atualizarGraficos() {
 }
 
 async function treinarRede(comando) {
+    if(comando === 'resetar' && !confirm('Tem certeza que deseja resetar o treinamento?')) return;
+
     const rede = document.getElementById('rede-select').value;
     const versao = document.getElementById('versao-select').value;
 
